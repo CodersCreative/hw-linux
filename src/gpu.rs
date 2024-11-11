@@ -37,7 +37,7 @@ impl InfoTrait for Gpus{
                     }
                     since = 0;
                 }else{
-                    if since < 3{
+                    if since < 3 && gpus.0.len() > 0{
                         if i.contains("driver"){
                             let inf = i.split(':').collect::<Vec<&str>>();
                             if inf.len() > 1{
