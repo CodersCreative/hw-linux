@@ -31,8 +31,8 @@ impl InfoTrait for Gpus{
                     let mut gpu = Gpu::default();
                     let inf = i.split(':').collect::<Vec<&str>>();
                     if inf.len() > 1 {
-                        gpu.name = Some(inf[1].trim().to_string());
-                        gpu.vendor = Some(inf[1].split_whitespace().collect::<Vec<&str>>()[0].trim().to_string());
+                        gpu.name = Some(inf[2].trim().to_string());
+                        gpu.vendor = Some(inf[2].split_whitespace().collect::<Vec<&str>>()[0].trim().to_string());
                         gpus.0.push(gpu);
                     }
                     since = 0;
