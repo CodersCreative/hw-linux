@@ -1,0 +1,37 @@
+use std::error::Error;
+use std::fs;
+use std::process::Command;
+use crate::{is_linux, HWError};
+
+#[derive(Default, Clone, Debug)]
+pub struct Core{
+    name : Option<String>,
+    usage : Option<u64>
+}
+
+#[derive(Default, Clone, Debug)]
+pub struct Cores(Vec<Core>);
+
+impl Cores {
+    pub fn get() -> Result<Self, Box<dyn Error>>{
+        let _ = is_linux()?;
+        let mut cores = Cores::default();
+        fs::read_to_string("/proc/stat")?
+            .split('\n')
+            .for_each(|i| {
+                let fields : Vec<&str> = i.split_whitespace().collect();
+                let user_time = fields[1].parse::<u64>().unwrap();
+                let nice_time = fields[2].parse::<u64>().unwrap();
+                let system_time = fields[3].parse::<u64>().unwrap();
+                let idle_time = fields[4].parse::<u64>().unwrap();
+
+                let total_time = user_time + nice_time + system_time + idle_time;
+                cores.0.push(Core{ 
+                    name : Some(fields[0].to_string()),
+                    usage : Some(100 - (idle_time * 100 / total_time)),
+                });
+            });
+
+        Ok(cores)
+    }
+}

@@ -1,0 +1,15 @@
+[package]
+name = "hw-linux"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+authors = ["Creative Coders <officialccoders@gmail.com>"]
+description = "A crate to get system information for linux."
+repository = "https://github.com/CodersCreative/hw-linux"
+readme = "README.md"
+publish = true
+keywords = ["linux", "system", "information", "software", "hardware"]
+categories = ["science", "api-bindings"]
+
+[dependencies]
+thiserror = "2.0.3"
