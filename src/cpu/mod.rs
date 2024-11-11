@@ -57,14 +57,19 @@ impl InfoTrait for CpuInfo{
                                 Err(_) => None,
                             }
                         }
+                        "cpu MHz" => {
+                            cpu.cur_freq = match val.parse::<f64>(){
+                                Ok(x) => Some(x),
+                                Err(_) => None,
+                            }
+                        }
                         &_ => (),
                     }
                 }
             });
 
-        // cpu.min_freq = Some(fs::read_to_string("/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_min_freq")?.trim().parse::<f64>()? / 1000_f64);
-        // cpu.max_freq = Some(fs::read_to_string("/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq")?.trim().parse::<f64>()? / 1000_f64);
-        // cpu.cur_freq = Some(fs::read_to_string("/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq")?.trim().parse::<f64>()? / 1000_f64);
+        cpu.min_freq = Some(fs::read_to_string("/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_min_freq")?.trim().parse::<f64>()? / 1000_f64);
+        cpu.max_freq = Some(fs::read_to_string("/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq")?.trim().parse::<f64>()? / 1000_f64);
         cpu.temp = Some(fs::read_to_string("/sys/class/thermal/thermal_zone10/temp")?.trim().parse::<f64>()? / 1000_f64);
         Ok(cpu)
     }
