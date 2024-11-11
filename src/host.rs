@@ -62,7 +62,7 @@ impl InfoTrait for HostInfo{
             });
 
         host.distro = Some(Self::get_distro()?);
-        host.desktop_env = Some(std::env::var("$DESKTOP_SESSION")?.trim().to_string());
+        host.desktop_env = Some(std::env::var("DESKTOP_SESSION")?.trim().to_string());
         host.win_manager = Some(std::env::var("USER")?.trim().to_string());
         host.session = Some(std::env::var("XDG_SESSION_TYPE")?.trim().to_string());
         Ok(host)
