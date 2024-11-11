@@ -1,7 +1,8 @@
-use crate::{is_linux, HWError};
+use crate::{is_linux, InfoTrait};
 use std::path::Path;
 use std::process::Command;
 use std::error::Error;
+
 pub struct PackageManager {
 	pub name: String,
 	pub packages: usize,
@@ -16,10 +17,10 @@ impl PackageManager {
 	}
 }
 
-pub struct PackageManagers(Vec<PackageManager>);
+pub struct PackageManagers(pub Vec<PackageManager>);
 
-impl PackageManagers {
-	pub fn get() -> Result<Self, Box<dyn Error>> {
+impl InfoTrait for PackageManagers {
+    fn get() -> Result<Self, Box<dyn Error>> {
 		let _ = is_linux()?;
 
 		let mut to_return = Vec::new();

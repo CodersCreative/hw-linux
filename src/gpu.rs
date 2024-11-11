@@ -1,22 +1,20 @@
-use std::fs;
 use std::process::Command;
-use super::{is_linux, HWError};
-
+use crate::{is_linux, InfoTrait};
 use std::error::Error;
 
 #[derive(Default, Clone, Debug)]
 pub struct Gpu{
-    name : Option<String>,
-    vendor : Option<String>,
-    driver : Option<String>,
+    pub name : Option<String>,
+    pub vendor : Option<String>,
+    pub driver : Option<String>,
 }
 
 #[derive(Default, Clone, Debug)]
-pub struct Gpus(Vec<Gpu>);
+pub struct Gpus(pub Vec<Gpu>);
 
 
-impl Gpus{
-    pub fn get() -> Result<Self, Box<dyn Error>>{
+impl InfoTrait for Gpus{
+    fn get() -> Result<Self, Box<dyn Error>>{
         let _ = is_linux()?;
         let mut gpus = Self::default();
         

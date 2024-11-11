@@ -1,25 +1,24 @@
 use std::fs;
-use std::process::Command;
-use crate::{is_linux, HWError};
+use crate::{is_linux, InfoTrait};
 use std::error::Error;
 
 pub mod cores;
 
 #[derive(Default, Clone, Debug)]
 pub struct CpuInfo{
-    name : Option<String>,
-    vendor : Option<String>,
-    cores : Option<usize>,
-    threads : Option<usize>,
-    cache : Option<f64>,
-    min_freq : Option<f64>,
-    cur_freq : Option<f64>,
-    max_freq : Option<f64>,
-    temp : Option<f64>,
+    pub name : Option<String>,
+    pub vendor : Option<String>,
+    pub cores : Option<usize>,
+    pub threads : Option<usize>,
+    pub cache : Option<f64>,
+    pub min_freq : Option<f64>,
+    pub cur_freq : Option<f64>,
+    pub max_freq : Option<f64>,
+    pub temp : Option<f64>,
 }
 
-impl CpuInfo{
-    pub fn get() -> Result<Self, Box<dyn Error>>{
+impl InfoTrait for CpuInfo{
+    fn get() -> Result<Self, Box<dyn Error>>{
         let _ = is_linux()?;
         let mut cpu = Self::default();
         fs::read_to_string("/proc/cpuinfo")?

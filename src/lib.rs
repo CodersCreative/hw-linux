@@ -1,6 +1,7 @@
 use thiserror::Error as TError;
 use std::error::Error;
 use std::process::Command;
+
 pub mod memory;
 pub mod environment;
 pub mod host;
@@ -9,8 +10,6 @@ pub mod gpu;
 
 #[derive(Debug, TError, Clone)]
 pub enum HWError {
-    #[error("Not Supported")]
-    NotSupported,
     #[error("OS is not Linux")]
     NotLinux,
 }
@@ -28,4 +27,8 @@ pub fn is_linux() -> Result<bool, Box<dyn Error>>{
         .for_each(|b| uname.push(*b as char));
     
      Ok(uname.replace("\n", "").trim() == "Linux")
+}
+
+pub trait InfoTrait {
+    fn get() -> Result<Self, Box<dyn Error>> where Self: Sized;
 }

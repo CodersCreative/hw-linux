@@ -1,19 +1,18 @@
 use std::error::Error;
 use std::fs;
-use std::process::Command;
-use crate::{is_linux, HWError};
+use crate::{is_linux, InfoTrait};
 
 #[derive(Default, Clone, Debug)]
 pub struct Core{
-    name : Option<String>,
-    usage : Option<u64>
+    pub name : Option<String>,
+    pub usage : Option<u64>
 }
 
 #[derive(Default, Clone, Debug)]
-pub struct Cores(Vec<Core>);
+pub struct Cores(pub Vec<Core>);
 
-impl Cores {
-    pub fn get() -> Result<Self, Box<dyn Error>>{
+impl InfoTrait for Cores {
+    fn get() -> Result<Self, Box<dyn Error>>{
         let _ = is_linux()?;
         let mut cores = Cores::default();
         fs::read_to_string("/proc/stat")?

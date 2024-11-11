@@ -1,19 +1,17 @@
-use std::fs;
 use std::process::Command;
-use super::{is_linux, HWError};
-
+use crate::{InfoTrait, is_linux};
 use std::error::Error;
 
 #[derive(Default, Clone, Debug)]
 pub struct HostInfo{
-    distro : Option<String>,
-    os : Option<String>,
-    architecture : Option<String>,
-    vendor : Option<String>,
-    model : Option<String>,
-    desktop_env : Option<String>,
-    session : Option<String>,
-    win_manager : Option<String>,
+    pub distro : Option<String>,
+    pub os : Option<String>,
+    pub architecture : Option<String>,
+    pub vendor : Option<String>,
+    pub model : Option<String>,
+    pub desktop_env : Option<String>,
+    pub session : Option<String>,
+    pub win_manager : Option<String>,
 }
 
 impl HostInfo{
@@ -24,7 +22,10 @@ impl HostInfo{
 
         Ok(std::str::from_utf8(&command.stdout)?.trim().to_string())
     }
-    pub fn get() -> Result<Self, Box<dyn Error>>{
+}
+
+impl InfoTrait for HostInfo{
+    fn get() -> Result<Self, Box<dyn Error>>{
         let _ = is_linux()?;
         let mut host = Self::default();
         

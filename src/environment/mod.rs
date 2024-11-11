@@ -1,26 +1,28 @@
 use std::fs;
 use std::process::Command;
-use crate::{is_linux, HWError};
-pub mod packages;
+use crate::{is_linux, InfoTrait};
 use std::error::Error;
+
+pub mod packages;
+
 #[derive(Default, Clone, Debug)]
 pub struct EnvironmentInfo{
-    user : Option<String>,
-    shell : Option<String>,
-    term : Option<String>,
+    pub user : Option<String>,
+    pub shell : Option<String>,
+    pub term : Option<String>,
 }
 
 #[derive(Default, Clone, Debug)]
 pub struct KernelInfo{
-    version : Option<String>,
-    release : Option<String>,
+    pub version : Option<String>,
+    pub release : Option<String>,
 }
 
 #[derive(Default, Clone, Debug)]
-pub struct UptimeInfo(Option<f64>);
+pub struct UptimeInfo(pub Option<f64>);
 
-impl EnvironmentInfo{
-    pub fn get() -> Result<Self, Box<dyn Error>>{
+impl InfoTrait for EnvironmentInfo{
+    fn get() -> Result<Self, Box<dyn Error>>{
         let _ = is_linux()?;
         Ok(Self{
             user : Some(std::env::var("USER")?.trim().to_string()),
@@ -30,8 +32,8 @@ impl EnvironmentInfo{
     }
 }
 
-impl KernelInfo{
-    pub fn get() -> Result<Self, Box<dyn Error>>{
+impl InfoTrait for KernelInfo{
+    fn get() -> Result<Self, Box<dyn Error>>{
         let _ = is_linux()?;
         let mut kernel = KernelInfo::default();
         let release = Some(match fs::read_to_string("/proc/sys/kernel/osrelease"){
@@ -50,8 +52,8 @@ impl KernelInfo{
     }
 }
 
-impl UptimeInfo{
-    pub fn get() -> Result<Self, Box<dyn Error>>{
+impl InfoTrait for UptimeInfo{
+    fn get() -> Result<Self, Box<dyn Error>>{
         let _ = is_linux()?;
         let mut uptime = Self::default();
         uptime.0 = Some(fs::read_to_string("/proc/uptime")?.parse::<f64>()?);

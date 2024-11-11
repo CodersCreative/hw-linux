@@ -1,24 +1,23 @@
 use std::fs;
-use std::process::Command;
-use super::{is_linux, HWError};
-
+use crate::{is_linux, InfoTrait};
 use std::error::Error;
+
 #[derive(Default, Clone, Debug)]
 pub struct MemoryInfo{
-    total : Option<f64>,
-    used : Option<f64>,
-    free : Option<f64>,
+    pub total : Option<f64>,
+    pub used : Option<f64>,
+    pub free : Option<f64>,
 }
 
 #[derive(Default, Clone, Debug)]
 pub struct SwapInfo{
-    total : Option<f64>,
-    used : Option<f64>,
-    free : Option<f64>,
+    pub total : Option<f64>,
+    pub used : Option<f64>,
+    pub free : Option<f64>,
 }
 
-impl SwapInfo{
-    pub fn get() -> Result<Self, Box<dyn Error>>{
+impl InfoTrait for SwapInfo{
+    fn get() -> Result<Self, Box<dyn Error>>{
         let _ = is_linux()?;
         let mut total = 0_f64;
         let mut free = 0_f64;
@@ -55,8 +54,8 @@ impl SwapInfo{
     }
 }
 
-impl MemoryInfo{
-    pub fn get() -> Result<Self, Box<dyn Error>>{
+impl InfoTrait for MemoryInfo{
+    fn get() -> Result<Self, Box<dyn Error>>{
         let _ = is_linux()?;
         let mut total = 0_f64;
         let mut free = 0_f64;
