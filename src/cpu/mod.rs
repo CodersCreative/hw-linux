@@ -29,6 +29,7 @@ impl InfoTrait for CpuInfo{
                     let key = inf[0].trim();
                     let val = inf[1]
                         .replace("kB", "")
+                        .replace("KB", "")
                         .replace("\n", "")
                         .trim().to_string();
 
