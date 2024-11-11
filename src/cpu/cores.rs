@@ -18,11 +18,11 @@ impl InfoTrait for Cores {
         fs::read_to_string("/proc/stat")?
             .split('\n')
             .for_each(|i| {
-                let fields : Vec<&str> = i.split_whitespace().collect();
-                let user_time = fields[1].parse::<u64>().unwrap();
-                let nice_time = fields[2].parse::<u64>().unwrap();
-                let system_time = fields[3].parse::<u64>().unwrap();
-                let idle_time = fields[4].parse::<u64>().unwrap();
+                let fields : Vec<&str> = i.split(" ").collect();
+                let user_time = fields[1].trim().parse::<u64>().unwrap();
+                let nice_time = fields[2].trim().parse::<u64>().unwrap();
+                let system_time = fields[3].trim().parse::<u64>().unwrap();
+                let idle_time = fields[4].trim().parse::<u64>().unwrap();
 
                 let total_time = user_time + nice_time + system_time + idle_time;
                 cores.0.push(Core{ 
