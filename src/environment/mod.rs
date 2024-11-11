@@ -56,7 +56,7 @@ impl InfoTrait for UptimeInfo{
     fn get() -> Result<Self, Box<dyn Error>>{
         let _ = is_linux()?;
         let mut uptime = Self::default();
-        uptime.0 = Some(fs::read_to_string("/proc/uptime")?.parse::<f64>()?);
+        uptime.0 = Some(fs::read_to_string("/proc/uptime")?.split_whitespace().collect::<Vec<&str>>()[0].parse::<f64>()?);
         Ok(uptime)
     }
 }
