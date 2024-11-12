@@ -100,7 +100,7 @@ impl InfoTrait for PackageManagers {
 			add("flatpak", "flatpak list");
 		}
 		if has_bin("cargo") {
-			add("cargo", "cargo list");
+			add("cargo", "cargo install --list");
 		}
 		if has_bin("pip") {
 			add("pip", "pip list");
