@@ -99,6 +99,9 @@ impl InfoTrait for PackageManagers {
 		if has_bin("flatpak") {
 			add("flatpak", "flatpak list");
 		}
+		if has_bin("cargo") {
+			add("cargo", "cargo list");
+		}
 		if has_bin("snap") {
 			let daemon_running = {
 				let try_output = Command::new("sh")
